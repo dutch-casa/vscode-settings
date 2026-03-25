@@ -10,10 +10,11 @@ case "$(uname)" in
   *)      echo "Unsupported OS"; exit 1 ;;
 esac
 
-# Symlink settings
+# Symlink settings + keybindings
 mkdir -p "$VSCODE_DIR"
 ln -sf "$SCRIPT_DIR/settings.json" "$VSCODE_DIR/settings.json"
-echo "Symlinked settings.json"
+ln -sf "$SCRIPT_DIR/keybindings.json" "$VSCODE_DIR/keybindings.json"
+echo "Symlinked settings.json and keybindings.json"
 
 # Install extensions
 echo "Installing extensions..."

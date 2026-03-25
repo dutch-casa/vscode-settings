@@ -1,0 +1,12 @@
+[
+  {
+    "key": "space",
+    "command": "whichkey.show",
+    "when": "editorTextFocus && vim.mode == 'Normal' && !whichkeyActive"
+  },
+  {
+    "key": "space",
+    "command": "workbench.action.quickOpen",
+    "when": "whichkeyActive"
+  }
+]

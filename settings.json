@@ -6,7 +6,7 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.inlayHints.enabled": "on",
+  "editor.inlayHints.enabled": "offUnlessPressed",
   "editor.rulers": [80],
   "editor.scrollBeyondLastLine": true,
   "editor.stickyScroll.enabled": true,
@@ -15,60 +15,126 @@
   // ── Vim (matching nvim keymaps.lua) ─────────────────────────
   // d/c/x go to black hole — never clobber clipboard
   "vim.normalModeKeyBindingsNonRecursive": [
+    // ── Black hole register (keymaps.lua) ─────────────────────
     { "before": ["d", "d"], "after": ["\"", "_", "d", "d"] },
     { "before": ["D"], "after": ["\"", "_", "D"] },
     { "before": ["C"], "after": ["\"", "_", "C"] },
     { "before": ["x"], "after": ["\"", "_", "x"] },
     { "before": ["X"], "after": ["\"", "_", "X"] },
-    // <leader>d = cut to system clipboard
     { "before": ["<leader>", "d"], "after": ["\"", "+", "d"] },
     { "before": ["<leader>", "D"], "after": ["\"", "+", "D"] },
-    // Switch source/header (C++)
-    { "before": ["<leader>", "c", "h"], "commands": ["clangd.switchheadersource"] },
-    // Organize imports (TS)
-    { "before": ["<leader>", "c", "o"], "commands": ["editor.action.organizeImports"] },
-    // Code actions
-    { "before": ["<leader>", "c", "a"], "commands": ["editor.action.quickFix"] },
-    // Rename symbol
-    { "before": ["<leader>", "c", "r"], "commands": ["editor.action.rename"] },
-    // Format
-    { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatDocument"] },
-    // Go to definition / references (LazyVim defaults)
+
+    // ── Window navigation (ctrl+hjkl) ─────────────────────────
+    { "before": ["<C-h>"], "commands": ["workbench.action.focusLeftGroup"] },
+    { "before": ["<C-j>"], "commands": ["workbench.action.focusBelowGroup"] },
+    { "before": ["<C-k>"], "commands": ["workbench.action.focusAboveGroup"] },
+    { "before": ["<C-l>"], "commands": ["workbench.action.focusRightGroup"] },
+
+    // ── Buffers (S-h / S-l) ───────────────────────────────────
+    { "before": ["<S-h>"], "commands": ["workbench.action.previousEditor"] },
+    { "before": ["<S-l>"], "commands": ["workbench.action.nextEditor"] },
+    { "before": ["[", "b"], "commands": ["workbench.action.previousEditor"] },
+    { "before": ["]", "b"], "commands": ["workbench.action.nextEditor"] },
+    { "before": ["<leader>", "b", "b"], "commands": ["workbench.action.quickOpenPreviousRecentlyUsedEditor"] },
+    { "before": ["<leader>", "`"], "commands": ["workbench.action.quickOpenPreviousRecentlyUsedEditor"] },
+    { "before": ["<leader>", "b", "d"], "commands": ["workbench.action.closeActiveEditor"] },
+    { "before": ["<leader>", "b", "o"], "commands": ["workbench.action.closeOtherEditors"] },
+    { "before": ["<leader>", "b", "D"], "commands": ["workbench.action.closeEditorsInGroup"] },
+
+    // ── Splits (leader - / |) ─────────────────────────────────
+    { "before": ["<leader>", "-"], "commands": ["workbench.action.splitEditorDown"] },
+    { "before": ["<leader>", "|"], "commands": ["workbench.action.splitEditorRight"] },
+    { "before": ["<leader>", "w", "d"], "commands": ["workbench.action.closeGroup"] },
+    { "before": ["<leader>", "w", "m"], "commands": ["workbench.action.toggleMaximizeEditorGroup"] },
+
+    // ── LSP / Code ────────────────────────────────────────────
     { "before": ["g", "d"], "commands": ["editor.action.revealDefinition"] },
+    { "before": ["g", "D"], "commands": ["editor.action.peekDefinition"] },
     { "before": ["g", "r"], "commands": ["editor.action.goToReferences"] },
     { "before": ["g", "I"], "commands": ["editor.action.goToImplementation"] },
     { "before": ["g", "t"], "commands": ["editor.action.goToTypeDefinition"] },
-    // Diagnostics
+    { "before": ["K"], "commands": ["editor.action.showHover"] },
+    { "before": ["<leader>", "c", "a"], "commands": ["editor.action.quickFix"] },
+    { "before": ["<leader>", "c", "r"], "commands": ["editor.action.rename"] },
+    { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatDocument"] },
+    { "before": ["<leader>", "c", "d"], "commands": ["editor.action.showHover"] },
+    { "before": ["<leader>", "c", "h"], "commands": ["clangd.switchheadersource"] },
+    { "before": ["<leader>", "c", "o"], "commands": ["editor.action.organizeImports"] },
+
+    // ── Diagnostics ───────────────────────────────────────────
     { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
     { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
-    // Hover info (like K in nvim)
-    { "before": ["K"], "commands": ["editor.action.showHover"] },
-    // Debug
+    { "before": ["]", "e"], "commands": ["editor.action.marker.nextInFiles"] },
+    { "before": ["[", "e"], "commands": ["editor.action.marker.prevInFiles"] },
+
+    // ── Quickfix ──────────────────────────────────────────────
+    { "before": ["]", "q"], "commands": ["search.action.focusNextSearchResult"] },
+    { "before": ["[", "q"], "commands": ["search.action.focusPreviousSearchResult"] },
+    { "before": ["<leader>", "x", "q"], "commands": ["workbench.action.togglePanel"] },
+
+    // ── Search / Pickers (leader f) ───────────────────────────
+    { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "f", "g"], "commands": ["workbench.action.findInFiles"] },
+    { "before": ["<leader>", "f", "n"], "commands": ["workbench.action.files.newUntitledFile"] },
+    { "before": ["<leader>", "f", "r"], "commands": ["workbench.action.openRecent"] },
+    { "before": ["<leader>", "f", "t"], "commands": ["workbench.action.terminal.toggleTerminal"] },
+    { "before": ["<leader>", "f", "T"], "commands": ["workbench.action.terminal.new"] },
+
+    // ── Sidebar / Explorer ────────────────────────────────────
+    { "before": ["<leader>", "e"], "commands": ["workbench.action.toggleSidebarVisibility"] },
+
+    // ── Git (leader g) ────────────────────────────────────────
+    { "before": ["<leader>", "g", "b"], "commands": ["gitlens.toggleLineBlame"] },
+    { "before": ["<leader>", "g", "l"], "commands": ["gitlens.showGraph"] },
+    { "before": ["<leader>", "g", "f"], "commands": ["gitlens.showFileHistoryView"] },
+    { "before": ["<leader>", "g", "B"], "commands": ["gitlens.openFileOnRemote"] },
+
+    // ── Debug (leader d) ──────────────────────────────────────
     { "before": ["<leader>", "d", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] },
+    { "before": ["<leader>", "d", "B"], "commands": ["editor.debug.action.conditionalBreakpoint"] },
     { "before": ["<leader>", "d", "c"], "commands": ["workbench.action.debug.continue"] },
     { "before": ["<leader>", "d", "s"], "commands": ["workbench.action.debug.stepOver"] },
     { "before": ["<leader>", "d", "i"], "commands": ["workbench.action.debug.stepInto"] },
     { "before": ["<leader>", "d", "o"], "commands": ["workbench.action.debug.stepOut"] },
     { "before": ["<leader>", "d", "t"], "commands": ["workbench.action.debug.stop"] },
-    // File explorer
-    { "before": ["<leader>", "e"], "commands": ["workbench.action.toggleSidebarVisibility"] },
-    // Search
-    { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
-    { "before": ["<leader>", "f", "g"], "commands": ["workbench.action.findInFiles"] },
-    // Terminal
-    { "before": ["<leader>", "f", "t"], "commands": ["workbench.action.terminal.toggleTerminal"] },
-    // Markdown preview
+    { "before": ["<leader>", "d", "r"], "commands": ["workbench.action.debug.restart"] },
+    { "before": ["<leader>", "d", "l"], "commands": ["workbench.action.debug.run"] },
+
+    // ── Toggles (leader u) ────────────────────────────────────
+    { "before": ["<leader>", "u", "w"], "commands": ["editor.action.toggleWordWrap"] },
+    { "before": ["<leader>", "u", "h"], "commands": ["editor.action.toggleInlayHints"] },
+    { "before": ["<leader>", "u", "l"], "commands": ["workbench.action.toggleLineNumbers"] },
+    { "before": ["<leader>", "u", "z"], "commands": ["workbench.action.toggleZenMode"] },
+    { "before": ["<leader>", "u", "s"], "commands": ["editor.action.toggleStickyScroll"] },
+    { "before": ["<leader>", "u", "m"], "commands": ["editor.action.toggleMinimap"] },
+
+    // ── Tabs (leader tab) ─────────────────────────────────────
+    { "before": ["<leader>", "<tab>", "<tab>"], "commands": ["workbench.action.newGroupEditor"] },
+    { "before": ["<leader>", "<tab>", "d"], "commands": ["workbench.action.closeGroup"] },
+    { "before": ["<leader>", "<tab>", "]"], "commands": ["workbench.action.nextEditorInGroup"] },
+    { "before": ["<leader>", "<tab>", "["], "commands": ["workbench.action.previousEditorInGroup"] },
+
+    // ── Quit ──────────────────────────────────────────────────
+    { "before": ["<leader>", "q", "q"], "commands": ["workbench.action.closeWindow"] },
+
+    // ── Markdown preview ──────────────────────────────────────
     { "before": ["<leader>", "c", "p"], "commands": ["markdown.showPreviewToSide"] }
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
+    // Black hole register
     { "before": ["d"], "after": ["\"", "_", "d"] },
     { "before": ["c"], "after": ["\"", "_", "c"] },
     { "before": ["x"], "after": ["\"", "_", "x"] },
     { "before": ["X"], "after": ["\"", "_", "X"] },
-    // Paste without losing clipboard
     { "before": ["p"], "after": ["\"", "_", "d", "P"] },
-    // Cut to system clipboard
-    { "before": ["<leader>", "d"], "after": ["\"", "+", "d"] }
+    { "before": ["<leader>", "d"], "after": ["\"", "+", "d"] },
+    // Better indenting (stay in visual after indent)
+    { "before": ["<"], "after": ["<", "g", "v"] },
+    { "before": [">"], "after": [">", "g", "v"] },
+    // Format selection
+    { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatSelection"] },
+    // Git browse selection
+    { "before": ["<leader>", "g", "B"], "commands": ["gitlens.openFileOnRemote"] }
   ],
   "vim.insertModeKeyBindingsNonRecursive": [
     { "before": ["j", "k"], "after": ["<Esc>"] },
@@ -79,6 +145,70 @@
   "vim.hlsearch": true,
   "vim.smartRelativeLine": true,
   "vim.timeout": 200,
+
+  // ── Which Key ───────────────────────────────────────────────
+  "whichkey.delay": 300,
+  "whichkey.sortOrder": "alphabetically",
+  "whichkey.bindings": [
+    { "key": "b", "name": "+buffer", "type": "bindings", "bindings": [
+      { "key": "b", "name": "Switch buffer", "type": "command", "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor" },
+      { "key": "d", "name": "Close buffer", "type": "command", "command": "workbench.action.closeActiveEditor" },
+      { "key": "o", "name": "Close others", "type": "command", "command": "workbench.action.closeOtherEditors" },
+      { "key": "D", "name": "Close all in group", "type": "command", "command": "workbench.action.closeEditorsInGroup" }
+    ]},
+    { "key": "c", "name": "+code", "type": "bindings", "bindings": [
+      { "key": "a", "name": "Code action", "type": "command", "command": "editor.action.quickFix" },
+      { "key": "d", "name": "Line diagnostics", "type": "command", "command": "editor.action.showHover" },
+      { "key": "f", "name": "Format", "type": "command", "command": "editor.action.formatDocument" },
+      { "key": "h", "name": "Switch header/source", "type": "command", "command": "clangd.switchheadersource" },
+      { "key": "o", "name": "Organize imports", "type": "command", "command": "editor.action.organizeImports" },
+      { "key": "p", "name": "Markdown preview", "type": "command", "command": "markdown.showPreviewToSide" },
+      { "key": "r", "name": "Rename symbol", "type": "command", "command": "editor.action.rename" }
+    ]},
+    { "key": "d", "name": "+debug", "type": "bindings", "bindings": [
+      { "key": "b", "name": "Toggle breakpoint", "type": "command", "command": "editor.debug.action.toggleBreakpoint" },
+      { "key": "B", "name": "Conditional breakpoint", "type": "command", "command": "editor.debug.action.conditionalBreakpoint" },
+      { "key": "c", "name": "Continue", "type": "command", "command": "workbench.action.debug.continue" },
+      { "key": "i", "name": "Step into", "type": "command", "command": "workbench.action.debug.stepInto" },
+      { "key": "l", "name": "Run (no debug)", "type": "command", "command": "workbench.action.debug.run" },
+      { "key": "o", "name": "Step out", "type": "command", "command": "workbench.action.debug.stepOut" },
+      { "key": "r", "name": "Restart", "type": "command", "command": "workbench.action.debug.restart" },
+      { "key": "s", "name": "Step over", "type": "command", "command": "workbench.action.debug.stepOver" },
+      { "key": "t", "name": "Stop", "type": "command", "command": "workbench.action.debug.stop" }
+    ]},
+    { "key": "e", "name": "Explorer", "type": "command", "command": "workbench.action.toggleSidebarVisibility" },
+    { "key": "f", "name": "+find/file", "type": "bindings", "bindings": [
+      { "key": "f", "name": "Find file", "type": "command", "command": "workbench.action.quickOpen" },
+      { "key": "g", "name": "Grep in files", "type": "command", "command": "workbench.action.findInFiles" },
+      { "key": "n", "name": "New file", "type": "command", "command": "workbench.action.files.newUntitledFile" },
+      { "key": "r", "name": "Recent files", "type": "command", "command": "workbench.action.openRecent" },
+      { "key": "t", "name": "Terminal", "type": "command", "command": "workbench.action.terminal.toggleTerminal" },
+      { "key": "T", "name": "New terminal", "type": "command", "command": "workbench.action.terminal.new" }
+    ]},
+    { "key": "g", "name": "+git", "type": "bindings", "bindings": [
+      { "key": "b", "name": "Blame line", "type": "command", "command": "gitlens.toggleLineBlame" },
+      { "key": "B", "name": "Open on remote", "type": "command", "command": "gitlens.openFileOnRemote" },
+      { "key": "f", "name": "File history", "type": "command", "command": "gitlens.showFileHistoryView" },
+      { "key": "l", "name": "Git graph", "type": "command", "command": "gitlens.showGraph" }
+    ]},
+    { "key": "q", "name": "+quit", "type": "bindings", "bindings": [
+      { "key": "q", "name": "Quit", "type": "command", "command": "workbench.action.closeWindow" }
+    ]},
+    { "key": "u", "name": "+toggle", "type": "bindings", "bindings": [
+      { "key": "h", "name": "Inlay hints", "type": "command", "command": "editor.action.toggleInlayHints" },
+      { "key": "l", "name": "Line numbers", "type": "command", "command": "workbench.action.toggleLineNumbers" },
+      { "key": "m", "name": "Minimap", "type": "command", "command": "editor.action.toggleMinimap" },
+      { "key": "s", "name": "Sticky scroll", "type": "command", "command": "editor.action.toggleStickyScroll" },
+      { "key": "w", "name": "Word wrap", "type": "command", "command": "editor.action.toggleWordWrap" },
+      { "key": "z", "name": "Zen mode", "type": "command", "command": "workbench.action.toggleZenMode" }
+    ]},
+    { "key": "w", "name": "+window", "type": "bindings", "bindings": [
+      { "key": "d", "name": "Close window", "type": "command", "command": "workbench.action.closeGroup" },
+      { "key": "m", "name": "Maximize", "type": "command", "command": "workbench.action.toggleMaximizeEditorGroup" },
+      { "key": "-", "name": "Split below", "type": "command", "command": "workbench.action.splitEditorDown" },
+      { "key": "|", "name": "Split right", "type": "command", "command": "workbench.action.splitEditorRight" }
+    ]}
+  ],
 
   // ── C++ (clangd) ───────────────────────────────────────────
   // Disable Microsoft IntelliSense — clangd handles everything.
@@ -421,5 +551,7 @@
     ".github/instructions": true
   },
   "chat.disableAIFeatures": true,
-  "claudeCode.preferredLocation": "panel"
+  "claudeCode.preferredLocation": "panel",
+  "editor.minimap.size": "fill",
+  "editor.minimap.showSlider": "always"
 }

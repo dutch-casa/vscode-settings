@@ -24,5 +24,6 @@ tamasfe.even-better-toml
 vadimcn.vscode-lldb
 vscode-icons-team.vscode-icons
 vscodevim.vim
+vspacecode.whichkey
 yoavbls.pretty-ts-errors
 yzhang.markdown-all-in-one
