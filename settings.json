@@ -319,13 +319,69 @@
   "chat.commandCenter.enabled": false,
   "security.workspace.trust.untrustedFiles": "open",
 
+  // ── LaTeX ───────────────────────────────────────────────────
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (lualatex)",
+      "tools": ["lualatexmk"]
+    },
+    {
+      "name": "latexmk (xelatex)",
+      "tools": ["xelatexmk"]
+    },
+    {
+      "name": "latexmk (pdflatex)",
+      "tools": ["pdflatexmk"]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "lualatexmk",
+      "command": "latexmk",
+      "args": ["-lualatex", "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"]
+    },
+    {
+      "name": "xelatexmk",
+      "command": "latexmk",
+      "args": ["-xelatex", "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"]
+    },
+    {
+      "name": "pdflatexmk",
+      "command": "latexmk",
+      "args": ["-pdf", "-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"]
+    }
+  ],
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof", "*.lot",
+    "*.out", "*.toc", "*.acn", "*.acr", "*.alg", "*.glg", "*.glo",
+    "*.gls", "*.fls", "*.log", "*.fdb_latexmk", "*.snm", "*.synctex(busy)",
+    "*.synctex.gz", "*.nav", "*.vrb"
+  ],
+  "latex-workshop.intellisense.citation.backend": "biblatex",
+  "[latex]": {
+    "editor.defaultFormatter": "james-yu.latex-workshop",
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": false
+  },
+
   // ── Biome ───────────────────────────────────────────────────
   "biome.suggestInstallingGlobally": false,
 
-  // ── Copilot (disabled) ──────────────────────────────────────
+  // ── Kill all AI chat/copilot ────────────────────────────────
   "github.copilot.enable": {
     "*": false
   },
+  "github.copilot.chat.enabled": false,
+  "github.copilot.renameSuggestions.triggerAutomatically": false,
+  "chat.commandCenter.enabled": false,
+  "chat.editor.enabled": false,
+  "chat.enabled": false,
+  "chat.panel.defaultMode": "hidden",
+  "chat.agent.enabled": false,
+  "workbench.panel.chat.defaultVisibility": "hidden",
+  "workbench.secondarySideBar.visible": false,
 
 
   // ── Python ──────────────────────────────────────────────────
@@ -363,5 +419,7 @@
   },
   "chat.instructionsFilesLocations": {
     ".github/instructions": true
-  }
+  },
+  "chat.disableAIFeatures": true,
+  "claudeCode.preferredLocation": "panel"
 }
