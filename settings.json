@@ -1,0 +1,367 @@
+{
+  // ── Editor ──────────────────────────────────────────────────
+  "editor.fontFamily": "'JetBrainsMono Nerd Font', 'JetBrains Mono', monospace",
+  "editor.fontLigatures": true,
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.inlayHints.enabled": "on",
+  "editor.rulers": [80],
+  "editor.scrollBeyondLastLine": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.cursorSurroundingLines": 8,
+
+  // ── Vim (matching nvim keymaps.lua) ─────────────────────────
+  // d/c/x go to black hole — never clobber clipboard
+  "vim.normalModeKeyBindingsNonRecursive": [
+    { "before": ["d", "d"], "after": ["\"", "_", "d", "d"] },
+    { "before": ["D"], "after": ["\"", "_", "D"] },
+    { "before": ["C"], "after": ["\"", "_", "C"] },
+    { "before": ["x"], "after": ["\"", "_", "x"] },
+    { "before": ["X"], "after": ["\"", "_", "X"] },
+    // <leader>d = cut to system clipboard
+    { "before": ["<leader>", "d"], "after": ["\"", "+", "d"] },
+    { "before": ["<leader>", "D"], "after": ["\"", "+", "D"] },
+    // Switch source/header (C++)
+    { "before": ["<leader>", "c", "h"], "commands": ["clangd.switchheadersource"] },
+    // Organize imports (TS)
+    { "before": ["<leader>", "c", "o"], "commands": ["editor.action.organizeImports"] },
+    // Code actions
+    { "before": ["<leader>", "c", "a"], "commands": ["editor.action.quickFix"] },
+    // Rename symbol
+    { "before": ["<leader>", "c", "r"], "commands": ["editor.action.rename"] },
+    // Format
+    { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatDocument"] },
+    // Go to definition / references (LazyVim defaults)
+    { "before": ["g", "d"], "commands": ["editor.action.revealDefinition"] },
+    { "before": ["g", "r"], "commands": ["editor.action.goToReferences"] },
+    { "before": ["g", "I"], "commands": ["editor.action.goToImplementation"] },
+    { "before": ["g", "t"], "commands": ["editor.action.goToTypeDefinition"] },
+    // Diagnostics
+    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
+    // Hover info (like K in nvim)
+    { "before": ["K"], "commands": ["editor.action.showHover"] },
+    // Debug
+    { "before": ["<leader>", "d", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] },
+    { "before": ["<leader>", "d", "c"], "commands": ["workbench.action.debug.continue"] },
+    { "before": ["<leader>", "d", "s"], "commands": ["workbench.action.debug.stepOver"] },
+    { "before": ["<leader>", "d", "i"], "commands": ["workbench.action.debug.stepInto"] },
+    { "before": ["<leader>", "d", "o"], "commands": ["workbench.action.debug.stepOut"] },
+    { "before": ["<leader>", "d", "t"], "commands": ["workbench.action.debug.stop"] },
+    // File explorer
+    { "before": ["<leader>", "e"], "commands": ["workbench.action.toggleSidebarVisibility"] },
+    // Search
+    { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "f", "g"], "commands": ["workbench.action.findInFiles"] },
+    // Terminal
+    { "before": ["<leader>", "f", "t"], "commands": ["workbench.action.terminal.toggleTerminal"] },
+    // Markdown preview
+    { "before": ["<leader>", "c", "p"], "commands": ["markdown.showPreviewToSide"] }
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    { "before": ["d"], "after": ["\"", "_", "d"] },
+    { "before": ["c"], "after": ["\"", "_", "c"] },
+    { "before": ["x"], "after": ["\"", "_", "x"] },
+    { "before": ["X"], "after": ["\"", "_", "X"] },
+    // Paste without losing clipboard
+    { "before": ["p"], "after": ["\"", "_", "d", "P"] },
+    // Cut to system clipboard
+    { "before": ["<leader>", "d"], "after": ["\"", "+", "d"] }
+  ],
+  "vim.insertModeKeyBindingsNonRecursive": [
+    { "before": ["j", "k"], "after": ["<Esc>"] },
+    { "before": ["j", "j"], "after": ["<Esc>"] }
+  ],
+  "vim.leader": "<space>",
+  "vim.useSystemClipboard": false,
+  "vim.hlsearch": true,
+  "vim.smartRelativeLine": true,
+  "vim.timeout": 200,
+
+  // ── C++ (clangd) ───────────────────────────────────────────
+  // Disable Microsoft IntelliSense — clangd handles everything.
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+  "clangd.path": "/opt/homebrew/opt/llvm/bin/clangd",
+  "clangd.arguments": [
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--fallback-flags=-std=c++23",
+    "--pch-storage=memory",
+    "--all-scopes-completion",
+    "--header-insertion-decorators"
+  ],
+
+  // ── Go ──────────────────────────────────────────────────────
+  "go.useLanguageServer": true,
+  "gopls": {
+    "formatting.gofumpt": true,
+    "ui.semanticTokens": true,
+    "ui.completion.usePlaceholders": true,
+    "ui.diagnostic.staticcheck": true,
+    "ui.diagnostic.analyses": {
+      "shadow": true,
+      "nilness": true,
+      "unusedparams": true,
+      "unusedwrite": true,
+      "useany": true
+    },
+    "ui.inlayhint.hints": {
+      "assignVariableTypes": true,
+      "compositeLiteralFields": true,
+      "compositeLiteralTypes": true,
+      "constantValues": true,
+      "functionTypeParameters": true,
+      "parameterNames": true,
+      "rangeVariableTypes": true
+    },
+    "ui.codelenses": {
+      "gc_details": true,
+      "generate": true,
+      "regenerate_cgo": true,
+      "run_govulncheck": true,
+      "test": true,
+      "tidy": true,
+      "upgrade_dependency": true,
+      "vendor": true
+    }
+  },
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"],
+  "go.formatTool": "gofumpt",
+
+  // ── TypeScript / React ──────────────────────────────────────
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.inlayHints.enumMemberValues.enabled": true,
+  "javascript.inlayHints.parameterNames.enabled": "all",
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "javascript.inlayHints.variableTypes.enabled": true,
+  "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "javascript.inlayHints.enumMemberValues.enabled": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.suggest.completeFunctionCalls": true,
+
+  // ── Per-language formatters ─────────────────────────────────
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+
+  // ── Git ─────────────────────────────────────────────────────
+  "git.enableSmartCommit": true,
+  "git.openRepositoryInParentFolders": "never",
+
+  // ── Workbench ───────────────────────────────────────────────
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.iconTheme": "vscode-icons",
+  // ── Wildcharm color matching ────────────────────────────────
+  "workbench.colorCustomizations": {
+    "editor.background": "#000000",
+    "editor.foreground": "#d0d0d0",
+    "editorCursor.foreground": "#ffffff",
+    "editor.lineHighlightBackground": "#262626",
+    "editor.selectionBackground": "#005f87",
+    "editorLineNumber.foreground": "#585858",
+    "editorLineNumber.activeForeground": "#ffffff",
+    "sideBar.background": "#000000",
+    "sideBar.foreground": "#d0d0d0",
+    "sideBarSectionHeader.background": "#000000",
+    "activityBar.background": "#000000",
+    "titleBar.activeBackground": "#000000",
+    "titleBar.activeForeground": "#d0d0d0",
+    "statusBar.background": "#000000",
+    "statusBar.foreground": "#9e9e9e",
+    "tab.activeBackground": "#000000",
+    "tab.inactiveBackground": "#000000",
+    "tab.activeForeground": "#d0d0d0",
+    "tab.inactiveForeground": "#767676",
+    "panel.background": "#000000",
+    "terminal.background": "#000000",
+    "terminal.foreground": "#d0d0d0",
+    "terminal.ansiBlack": "#000000",
+    "terminal.ansiRed": "#d7005f",
+    "terminal.ansiGreen": "#00af5f",
+    "terminal.ansiYellow": "#d78700",
+    "terminal.ansiBlue": "#0087d7",
+    "terminal.ansiMagenta": "#d787d7",
+    "terminal.ansiCyan": "#00afaf",
+    "terminal.ansiWhite": "#d0d0d0",
+    "terminal.ansiBrightBlack": "#767676",
+    "terminal.ansiBrightRed": "#ff5f87",
+    "terminal.ansiBrightGreen": "#00d75f",
+    "terminal.ansiBrightYellow": "#ffaf00",
+    "terminal.ansiBrightBlue": "#00afff",
+    "terminal.ansiBrightMagenta": "#ff87ff",
+    "terminal.ansiBrightCyan": "#00d7d7",
+    "terminal.ansiBrightWhite": "#ffffff",
+    "editorWidget.background": "#303030",
+    "editorSuggestWidget.background": "#303030",
+    "editorSuggestWidget.foreground": "#d0d0d0",
+    "editorSuggestWidget.selectedBackground": "#585858",
+    "list.activeSelectionBackground": "#585858",
+    "list.hoverBackground": "#303030",
+    "input.background": "#303030",
+    "dropdown.background": "#303030",
+    "editorGutter.addedBackground": "#00af5f",
+    "editorGutter.modifiedBackground": "#0087d7",
+    "editorGutter.deletedBackground": "#d7005f",
+    "gitDecoration.addedResourceForeground": "#00af5f",
+    "gitDecoration.modifiedResourceForeground": "#0087d7",
+    "gitDecoration.deletedResourceForeground": "#d7005f",
+    "editorError.foreground": "#d7005f",
+    "editorWarning.foreground": "#ffaf00",
+    "editorInfo.foreground": "#00afff",
+    "focusBorder": "#585858",
+    "editorRuler.foreground": "#303030",
+    "editorIndentGuide.background1": "#303030",
+    "editorBracketMatch.border": "#ff00af"
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": "#767676",
+    "strings": "#00d75f",
+    "keywords": "#00afff",
+    "numbers": "#ff5f87",
+    "types": "#ffaf00",
+    "functions": "#ff87ff",
+    "variables": "#d0d0d0",
+    "textMateRules": [
+      {
+        "scope": ["constant", "constant.numeric", "constant.language"],
+        "settings": { "foreground": "#ff5f87" }
+      },
+      {
+        "scope": ["entity.name.function", "support.function"],
+        "settings": { "foreground": "#ff87ff" }
+      },
+      {
+        "scope": ["entity.name.type", "support.type", "support.class"],
+        "settings": { "foreground": "#ffaf00" }
+      },
+      {
+        "scope": ["keyword", "keyword.control", "storage.type", "storage.modifier"],
+        "settings": { "foreground": "#00afff" }
+      },
+      {
+        "scope": ["string", "string.quoted"],
+        "settings": { "foreground": "#00d75f" }
+      },
+      {
+        "scope": ["variable", "variable.other", "variable.parameter"],
+        "settings": { "foreground": "#d0d0d0" }
+      },
+      {
+        "scope": ["entity.name.tag", "punctuation.definition.tag"],
+        "settings": { "foreground": "#00afff" }
+      },
+      {
+        "scope": ["entity.other.attribute-name"],
+        "settings": { "foreground": "#ffaf00" }
+      },
+      {
+        "scope": ["meta.preprocessor", "keyword.control.directive"],
+        "settings": { "foreground": "#00d7d7" }
+      },
+      {
+        "scope": ["punctuation.special", "keyword.operator"],
+        "settings": { "foreground": "#875fff" }
+      },
+      {
+        "scope": ["comment", "punctuation.definition.comment"],
+        "settings": { "foreground": "#767676" }
+      },
+      {
+        "scope": ["markup.deleted"],
+        "settings": { "foreground": "#d7005f" }
+      },
+      {
+        "scope": ["markup.inserted"],
+        "settings": { "foreground": "#00af5f" }
+      },
+      {
+        "scope": ["markup.changed"],
+        "settings": { "foreground": "#0087d7" }
+      }
+    ]
+  },
+  "workbench.startupEditor": "none",
+  "workbench.editor.editorActionsLocation": "titleBar",
+  "workbench.editor.showTabs": "single",
+  "workbench.experimental.share.enabled": true,
+  "update.showReleaseNotes": false,
+  "chat.commandCenter.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+
+  // ── Biome ───────────────────────────────────────────────────
+  "biome.suggestInstallingGlobally": false,
+
+  // ── Copilot (disabled) ──────────────────────────────────────
+  "github.copilot.enable": {
+    "*": false
+  },
+
+
+  // ── Python ──────────────────────────────────────────────────
+  "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+
+  // ── File nesting ────────────────────────────────────────────
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+    "pubspec.yaml": "pubspec.lock,pubspec_overrides.yaml,.packages,.flutter-plugins,.flutter-plugins-dependencies,.metadata",
+    "*.dart": "${capture}.g.dart",
+    "*.fs": "${basename}.fsi, ${basename}.fs.js, ${basename}.fs.js.map",
+    "*.fsl": "${basename}.fsi, ${basename}.fs",
+    "*.fsy": "${basename}.fsi, ${basename}.fs",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.db": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.s3db": "${capture}.${extname}-*"
+  },
+
+  // ── Misc ────────────────────────────────────────────────────
+  "json.schemaDownload.trustedDomains": {
+    "https://schemastore.azurewebsites.net/": true,
+    "https://raw.githubusercontent.com/": true,
+    "https://www.schemastore.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://json-schema.org/": true,
+    "https://biomejs.dev": true
+  },
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true
+  }
+}
