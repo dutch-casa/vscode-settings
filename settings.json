@@ -15,6 +15,10 @@
   // ── Vim (matching nvim keymaps.lua) ─────────────────────────
   // d/c/x go to black hole — never clobber clipboard
   "vim.normalModeKeyBindingsNonRecursive": [
+    // ── Flash-like jump (s{char}{char}) ───────────────────────
+    { "before": ["s"], "after": ["<leader>", "<leader>", "2", "s"] },
+    { "before": ["S"], "after": ["<leader>", "<leader>", "s"] },
+
     // ── Black hole register (keymaps.lua) ─────────────────────
     { "before": ["d", "d"], "after": ["\"", "_", "d", "d"] },
     { "before": ["D"], "after": ["\"", "_", "D"] },
@@ -80,6 +84,13 @@
     { "before": ["<leader>", "f", "t"], "commands": ["workbench.action.terminal.toggleTerminal"] },
     { "before": ["<leader>", "f", "T"], "commands": ["workbench.action.terminal.new"] },
 
+    // ── Refactor (leader r) — matches refactoring.nvim ────────
+    { "before": ["<leader>", "r", "s"], "commands": ["editor.action.refactor"] },
+    { "before": ["<leader>", "r", "f"], "commands": ["editor.action.extractMethod"] },
+    { "before": ["<leader>", "r", "x"], "commands": ["editor.action.extractVariable"] },
+    { "before": ["<leader>", "r", "i"], "commands": ["editor.action.inlineVariable"] },
+    { "before": ["<leader>", "r", "r"], "commands": ["editor.action.rename"] },
+
     // ── Sidebar / Explorer ────────────────────────────────────
     { "before": ["<leader>", "e"], "commands": ["workbench.action.toggleSidebarVisibility"] },
 
@@ -121,6 +132,8 @@
     { "before": ["<leader>", "c", "p"], "commands": ["markdown.showPreviewToSide"] }
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
+    // Flash-like jump in visual mode
+    { "before": ["s"], "after": ["<leader>", "<leader>", "2", "s"] },
     // Black hole register
     { "before": ["d"], "after": ["\"", "_", "d"] },
     { "before": ["c"], "after": ["\"", "_", "c"] },
@@ -133,6 +146,11 @@
     { "before": [">"], "after": [">", "g", "v"] },
     // Format selection
     { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatSelection"] },
+    // Refactor
+    { "before": ["<leader>", "r", "s"], "commands": ["editor.action.refactor"] },
+    { "before": ["<leader>", "r", "f"], "commands": ["editor.action.extractMethod"] },
+    { "before": ["<leader>", "r", "x"], "commands": ["editor.action.extractVariable"] },
+    { "before": ["<leader>", "r", "i"], "commands": ["editor.action.inlineVariable"] },
     // Git browse selection
     { "before": ["<leader>", "g", "B"], "commands": ["gitlens.openFileOnRemote"] }
   ],
@@ -145,6 +163,14 @@
   "vim.hlsearch": true,
   "vim.smartRelativeLine": true,
   "vim.timeout": 200,
+
+  // ── Flash-like jump (easymotion) ────────────────────────────
+  // s{char}{char} jumps anywhere visible — like flash.nvim in LazyVim
+  "vim.easymotion": true,
+  "vim.easymotionMarkerBackgroundColor": "#7e57c2",
+  "vim.easymotionMarkerForegroundColorOneChar": "#ffffff",
+  "vim.easymotionMarkerForegroundColorTwoCharFirst": "#ffffff",
+  "vim.easymotionMarkerForegroundColorTwoCharSecond": "#ffffff",
 
   // ── Which Key ───────────────────────────────────────────────
   "whichkey.delay": 300,
@@ -190,6 +216,13 @@
       { "key": "B", "name": "Open on remote", "type": "command", "command": "gitlens.openFileOnRemote" },
       { "key": "f", "name": "File history", "type": "command", "command": "gitlens.showFileHistoryView" },
       { "key": "l", "name": "Git graph", "type": "command", "command": "gitlens.showGraph" }
+    ]},
+    { "key": "r", "name": "+refactor", "type": "bindings", "bindings": [
+      { "key": "f", "name": "Extract function", "type": "command", "command": "editor.action.extractMethod" },
+      { "key": "x", "name": "Extract variable", "type": "command", "command": "editor.action.extractVariable" },
+      { "key": "i", "name": "Inline variable", "type": "command", "command": "editor.action.inlineVariable" },
+      { "key": "r", "name": "Rename", "type": "command", "command": "editor.action.rename" },
+      { "key": "s", "name": "Refactor menu", "type": "command", "command": "editor.action.refactor" }
     ]},
     { "key": "q", "name": "+quit", "type": "bindings", "bindings": [
       { "key": "q", "name": "Quit", "type": "command", "command": "workbench.action.closeWindow" }
@@ -310,7 +343,7 @@
   "git.openRepositoryInParentFolders": "never",
 
   // ── Workbench ───────────────────────────────────────────────
-  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.colorTheme": "Dark Modern",
   "workbench.iconTheme": "vscode-icons",
   // ── Wildcharm color matching ────────────────────────────────
   "workbench.colorCustomizations": {
@@ -553,5 +586,6 @@
   "chat.disableAIFeatures": true,
   "claudeCode.preferredLocation": "panel",
   "editor.minimap.size": "fill",
-  "editor.minimap.showSlider": "always"
+  "editor.minimap.showSlider": "always",
+  "editor.minimap.enabled": false
 }
