@@ -202,6 +202,8 @@
       { "key": "s", "name": "Step over", "type": "command", "command": "workbench.action.debug.stepOver" },
       { "key": "t", "name": "Stop", "type": "command", "command": "workbench.action.debug.stop" }
     ]},
+    { "key": "-", "name": "Split below", "type": "command", "command": "workbench.action.splitEditorDown" },
+    { "key": "|", "name": "Split right", "type": "command", "command": "workbench.action.splitEditorRight" },
     { "key": "e", "name": "Explorer", "type": "command", "command": "workbench.action.toggleSidebarVisibility" },
     { "key": "f", "name": "+find/file", "type": "bindings", "bindings": [
       { "key": "f", "name": "Find file", "type": "command", "command": "workbench.action.quickOpen" },
@@ -343,7 +345,7 @@
   "git.openRepositoryInParentFolders": "never",
 
   // ── Workbench ───────────────────────────────────────────────
-  "workbench.colorTheme": "Dark Modern",
+  "workbench.colorTheme": "Rosé Pine",
   "workbench.iconTheme": "vscode-icons",
   // ── Wildcharm color matching ────────────────────────────────
   "workbench.colorCustomizations": {
